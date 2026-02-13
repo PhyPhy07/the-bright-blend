@@ -57,4 +57,3 @@ export function toWeatherIcon(value: string | undefined): WeatherIcon {
     ? (normalized as WeatherIcon)
     : "cloudy" as WeatherIcon;
 }
-  

@@ -1,6 +1,6 @@
 import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { createForecastDay } from "@/lib/utils/forecast";
-import { toWeatherIcon } from "@/lib/utils/wmo-codes";
+import { toWeatherIcon } from "@/lib/utils/wmoCodes";
 
 interface PirateWeatherDailyData {
   time: number;

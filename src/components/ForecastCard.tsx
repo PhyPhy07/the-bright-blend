@@ -1,4 +1,5 @@
 import type { ForecastDay } from "@/lib/providers/types";
+import { iconToEmoji } from "@/lib/utils/iconEmoji";
 
 export function ForecastCard({
   day,
@@ -12,7 +13,12 @@ export function ForecastCard({
       <p className="mb-2 text-sm font-medium uppercase tracking-wide text-amber-600">
         Optimistic Forecast
       </p>
-      <p className="mb-4 text-amber-900">{day.date}</p>
+      <p className="mb-4 flex items-center gap-2 text-amber-900">
+        {day.icon && (
+          <span className="text-3xl">{iconToEmoji(day.icon)}</span>
+        )}
+        {day.date}
+      </p>
       <div className="space-y-2 text-lg">
         <p>
           <span className="font-semibold text-amber-900">High:</span>{" "}
@@ -30,12 +36,6 @@ export function ForecastCard({
           <span className="font-semibold text-amber-900">Precipitation:</span>{" "}
           {day.precipitationChance}%
         </p>
-        {day.icon && (
-          <p>
-            <span className="font-semibold text-amber-900">Icon:</span>{" "}
-            {day.icon}
-          </p>
-        )}
       </div>
       <p className="mt-4 text-sm text-amber-600">via {provider}</p>
     </div>
