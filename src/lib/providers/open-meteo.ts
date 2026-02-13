@@ -1,16 +1,18 @@
-import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
-import { wmoCodeToDescription } from "@/lib/utils/wmo-codes";
+import { createForecastDay } from "../utils/forecast";
+import type { NormalizedForecast, ForecastDay, WeatherProvider, WeatherIcon } from "./types";
+import { wmoCodeToDisplay} from "@/lib/utils/wmo-codes";
 
 const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 
 interface OpenMeteoResponse {
-  daily: {
-    time: string[];
-    temperature_2m_max: number[];
-    temperature_2m_min: number[];
-    precipitation_probability_max: number[];
-    weathercode: number[];
+  daily?: {
+    time?: string[];
+    temperature_2m_max?: (number | null)[];
+    temperature_2m_min?: (number | null)[];
+    precipitation_probability_max?: (number | null)[];
+    weathercode?: (number | null)[];
   };
+  // TODO: add more fields as needed or remove fields that are not needed
 }
 
 export class OpenMeteoProvider implements WeatherProvider {
@@ -23,24 +25,42 @@ export class OpenMeteoProvider implements WeatherProvider {
       daily:
         "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode",
       temperature_unit: "fahrenheit",
-      timezone: "America/New_York",
+      timezone: "auto",
     });
 
     const res = await fetch(`${OPEN_METEO_BASE}?${params}`);
-    if (!res.ok) throw new Error(`Open-Meteo API error: ${res.status}`);
+      if (!res.ok) throw new Error(`Open-Meteo API error: ${res.status}`);
 
     const data: OpenMeteoResponse = await res.json();
-    const { daily } = data;
+    const daily = data.daily;
 
-    const dailyForecasts: ForecastDay[] = daily.time.map((date, i) => ({
-      date,
-      tempHighF: daily.temperature_2m_max[i],
-      tempLowF: daily.temperature_2m_min[i],
-      precipitationChance: daily.precipitation_probability_max[i],
-      description: wmoCodeToDescription(daily.weathercode[i]),
-      icon: daily.weathercode[i].toString(),
-    }));
+  
+    if (!daily?.time?.length) {
+      throw new Error("Open-Meteo API returned invalid or empty daily forecast");
+    }
+    const times = daily.time;
+    const tempMax = daily.temperature_2m_max ?? [];
+    const tempMin = daily.temperature_2m_min ?? [];
+    const precipProb = daily.precipitation_probability_max ?? [];
+    const weathercodes = daily.weathercode ?? [];
+    // using ?? [] to handle cases where the array is undefined or empty
 
+    if (times.length !== tempMax.length || times.length !== tempMin.length) {
+      throw new Error("Open-Meteo API returned misaligned arrays");
+    }
+    const dailyForecasts: ForecastDay[] = times.map((date, i) => {
+      const code = weathercodes[i] ?? 0;
+      const {description, icon } = wmoCodeToDisplay(code);
+      return createForecastDay({
+        date,
+        tempHighF: tempMax[i] ?? 0,
+        tempLowF: tempMin[i] ?? 0,
+        precipitationChance: precipProb[i] ?? 0,
+        description,
+        icon,
+      });
+    });
+//single lookup for description and icon, alignment check for arrays
     return {
       provider: this.name,
       location: "New York",
@@ -49,3 +69,5 @@ export class OpenMeteoProvider implements WeatherProvider {
     };
   }
 }
+
+// TODO: combined wmo lookup, caching?

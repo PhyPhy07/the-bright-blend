@@ -1,4 +1,6 @@
 import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
+import { createForecastDay } from "@/lib/utils/forecast";
+import { toWeatherIcon } from "@/lib/utils/wmo-codes";
 
 interface PirateWeatherDailyData {
   time: number;
@@ -12,8 +14,8 @@ interface PirateWeatherDailyData {
 }
 
 interface PirateWeatherResponse {
-  daily: {
-    data: PirateWeatherDailyData[];
+  daily?: {
+    data?: PirateWeatherDailyData[];
   };
 }
 
@@ -34,20 +36,22 @@ export class PirateWeatherProvider implements WeatherProvider {
 
     const data: PirateWeatherResponse = await res.json();
     const days = data.daily?.data ?? [];
-
+    if (!days.length) {
+      throw new Error("Pirate Weather API returned invalid or empty daily forecast");
+    }
     const daily: ForecastDay[] = days.map((day) => {
       const tempHigh = day.temperatureHigh ?? day.temperatureMax ?? 0;
       const tempLow = day.temperatureLow ?? day.temperatureMin ?? 0;
       const precipPct = Math.round(day.precipProbability * 100);
 
-      return {
+      return createForecastDay({
         date: unixToDateString(day.time),
         tempHighF: tempHigh,
         tempLowF: tempLow,
         description: day.summary,
         precipitationChance: precipPct,
-        icon: day.icon,
-      };
+        icon: toWeatherIcon(day.icon),
+      });
     });
 
     return {
