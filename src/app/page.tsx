@@ -3,6 +3,7 @@ import { getOptimisticForecast } from "@/lib/optimizer";
 import type { NormalizedForecast } from "@/lib/providers/types";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
+
 const NYC_LAT = 40.7128;
 const NYC_LON = -74.006;
 
@@ -19,11 +20,16 @@ export default async function Home() {
   const optimistic = getOptimisticForecast(forecasts);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50 px-4 py-8">
-      <main className="mx-auto max-w-2xl">
-        <h1 className="mb-8 text-center text-3xl font-bold text-amber-900">
-          It&apos;s Always Sunny in New York ☀️
-        </h1>
+    <div className="min-h-screen bg-white px-4 pt-4 pb-8">
+      <main className="mx-auto max-w-4xl">
+        <header className="mb-4 text-center">
+          <h1 className="text-7xl font-bold font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
+            THE BRIGHT BLEND
+          </h1>
+          <h2 className="mt-2 text-2xl font-bold font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
+            Optimistically delusional, by design.
+          </h2>
+        </header>
 
         <ForecastWithRefresh initialData={optimistic} />
       </main>
