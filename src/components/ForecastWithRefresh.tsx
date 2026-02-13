@@ -17,7 +17,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
   async function handleRefresh() {
     setIsRefreshing(true);
     try {
-      const res = await fetch("/api/forecast", { cache: "no-store" });
+      const res = await fetch(`/api/forecast?t=${Date.now()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setForecast(json.optimistic);
