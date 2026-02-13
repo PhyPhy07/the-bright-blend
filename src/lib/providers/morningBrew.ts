@@ -8,6 +8,7 @@ const MORNING_BREW_URL =
 export class MorningBrewProvider implements WeatherProvider {
   name = "Morning Brew";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- lat/lon required by interface; Morning Brew uses fixed location
   async fetchForecast(_lat: number, _lon: number): Promise<NormalizedForecast> {
     const res = await fetch(MORNING_BREW_URL);
     if (!res.ok) throw new Error(`Morning Brew API error: ${res.status}`);

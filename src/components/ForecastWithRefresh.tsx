@@ -1,6 +1,7 @@
 "use client";
 
 import { NormalizedForecast } from "@/lib/providers/types";
+import Image from "next/image";
 import { useState } from "react";
 import { SiCoffeescript } from "react-icons/si";
 import { ForecastCard } from "./ForecastCard";
@@ -37,9 +38,11 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
           style={{ borderColor: "#D5E5FE", boxShadow: "0 10px 15px -3px rgba(213, 229, 254, 0.4), 0 4px 6px -2px rgba(213, 229, 254, 0.3)" }}
         >
           <div className="min-w-[360px] flex-1 overflow-hidden">
-            <img
+            <Image
               src="/MORNING%20BREW%20LOGO%20EDIT.png"
               alt=""
+              width={360}
+              height={280}
               className="h-full min-h-[280px] w-full object-cover"
             />
           </div>

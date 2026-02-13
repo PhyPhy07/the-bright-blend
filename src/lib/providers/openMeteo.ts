@@ -1,5 +1,5 @@
 import { createForecastDay } from "../utils/forecast";
-import type { NormalizedForecast, ForecastDay, WeatherProvider, WeatherIcon } from "./types";
+import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { wmoCodeToDisplay } from "@/lib/utils/wmoCodes";
 
 const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
