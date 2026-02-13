@@ -3,6 +3,7 @@ import { getOptimisticForecast } from "@/lib/optimizer";
 import type { NormalizedForecast } from "@/lib/providers/types";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
+export const dynamic = "force-dynamic";
 
 const NYC_LAT = 40.7128;
 const NYC_LON = -74.006;
