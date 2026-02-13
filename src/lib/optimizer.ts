@@ -20,6 +20,16 @@ function getTodayDateNYC(): string {
   });
 }
 
+function normalizeDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr + "T12:00:00");
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toISOString().slice(0, 10);
+  } catch {
+    return dateStr;
+  }
+}
+
 export function getOptimisticForecast(forecasts: NormalizedForecast[]): NormalizedForecast {
   if (forecasts.length === 0) {
     return {
@@ -34,13 +44,22 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
   const todaysFromAll: ForecastDay[] = [];
 
   for (const forecast of forecasts) {
-    const todaysDay = forecast.daily.find((day) => day.date === today);
+    const todaysDay = forecast.daily.find((day) => normalizeDate(day.date) === today);
     if (todaysDay) todaysFromAll.push(todaysDay);
   }
 
+  const temps = todaysFromAll.map((d) => d.tempHighF).sort((a, b) => a - b);
+  const medianTemp = temps.length > 0 ? temps[Math.floor(temps.length / 2)] : 0;
+  const OUTLIER_THRESHOLD = 15;
+
+  const inRange = todaysFromAll.filter(
+    (day) => Math.abs(day.tempHighF - medianTemp) <= OUTLIER_THRESHOLD
+  );
+  const candidates = inRange.length > 0 ? inRange : todaysFromAll;
+
   let bestDay: ForecastDay | null = null;
   let bestScore = -Infinity;
-  for (const day of todaysFromAll) {
+  for (const day of candidates) {
     const score = computeOptimismScore(day);
     if (score > bestScore) {
       bestDay = day;
@@ -59,5 +78,5 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
     fetchedAt: latestFetched,
     daily: bestDay ? [bestDay] : [],
   };
-  //optimizer/aggregator gathers forecast data from all providers, and returns the best day based on the score, returns a new normalized forecast object with the best day
+  //the flow is: fetch from all providers → normalize and filter to today → score each → pick the best → show that as the single “optimistic” forecast.
 }

@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Bright Blend
+
+**The Bright Blend** — An app that finds the silver lining by displaying the most optimistic (sunniest/warmest) forecast for NYC, regardless of reality.
+
+## Live App
+
+**Vercel Deployment:** [https://the-bright-blend.vercel.app/](https://the-bright-blend.vercel.app/)
+
+---
+
+## How It Works
+
+### Flow
+
+```
+User visits the app (or clicks Rebrew)
+    → Server fetches from Open-Meteo, Pirate Weather, and Morning Brew
+    → Normalizes dates and filters to today's forecast for NYC
+    → Drops outliers (forecasts >15°F from median)
+    → Scores each: temp + sunny bonus − precip penalty
+    → Picks the highest-scoring forecast
+    → Displays the optimistic result
+```
+
+### Optimistic Scoring
+
+The app selects the "best" forecast using:
+
+- **Temperature** — Higher is better
+- **Sunny bonus** — +10 for clear or partly cloudy conditions
+- **Precipitation penalty** — Lower rain chance is better
+
+Outlier filtering ensures one bad provider can't cause drastic swings (e.g. 60° → 38°).
+
+### Providers
+
+| Provider | API | Key Required |
+|----------|-----|--------------|
+| Open-Meteo | [open-meteo.com](https://open-meteo.com) | No |
+| Pirate Weather | [pirateweather.net](https://pirateweather.net) | Yes |
+| Morning Brew | [weather-ashy-gamma-36.vercel.app](https://weather-ashy-gamma-36.vercel.app/api/forecast) | No |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A [Pirate Weather](https://pirateweather.net) API key (free)
+
+### Setup
+
+1. Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/PhyPhy07/the-bright-blend.git
+cd the-bright-blend
+npm install
+```
+
+2. Create `.env.local` and add your Pirate Weather API key:
+
+```
+PIRATE_WEATHER_API_KEY=your_key_here
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Provider registry** — Single source of truth for weather providers; add new providers by implementing the `WeatherProvider` interface and registering in `getProviders()`
+- **Normalized types** — `NormalizedForecast` and `ForecastDay` ensure consistency across providers
+- **Optimizer** — Pluggable scoring logic for selecting the "best" forecast

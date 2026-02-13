@@ -20,7 +20,9 @@ interface PirateWeatherResponse {
 }
 
 function unixToDateString(unix: number): string {
-  return new Date(unix * 1000).toISOString().slice(0, 10);
+  return new Date(unix * 1000).toLocaleDateString("en-CA", {
+    timeZone: "America/New_York",
+  });
 }
 
 export class PirateWeatherProvider implements WeatherProvider {
