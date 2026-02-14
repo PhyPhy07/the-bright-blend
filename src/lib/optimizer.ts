@@ -50,7 +50,7 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
 
   const temps = todaysFromAll.map((d) => d.day.tempHighF).sort((a, b) => a - b);
   const medianTemp = temps.length > 0 ? temps[Math.floor(temps.length / 2)] : 0;
-  const OUTLIER_THRESHOLD = 15;
+  const OUTLIER_THRESHOLD = 10;
 
   const inRange = todaysFromAll.filter(
     ({ day }) => Math.abs(day.tempHighF - medianTemp) <= OUTLIER_THRESHOLD
