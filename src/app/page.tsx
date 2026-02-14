@@ -1,6 +1,5 @@
 import { getProviders } from "@/lib/providers/registry";
 import { getOptimisticForecast } from "@/lib/optimizer";
-import type { NormalizedForecast } from "@/lib/providers/types";
 import { getFulfilledValues } from "@/lib/utils/settledPromise";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
