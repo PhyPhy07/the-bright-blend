@@ -41,28 +41,28 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
   }
 
   const today = getTodayDateNYC();
-  const todaysFromAll: ForecastDay[] = [];
+  const todaysFromAll: { day: ForecastDay; provider: string }[] = [];
 
   for (const forecast of forecasts) {
     const todaysDay = forecast.daily.find((day) => normalizeDate(day.date) === today);
-    if (todaysDay) todaysFromAll.push(todaysDay);
+    if (todaysDay) todaysFromAll.push({ day: todaysDay, provider: forecast.provider });
   }
 
-  const temps = todaysFromAll.map((d) => d.tempHighF).sort((a, b) => a - b);
+  const temps = todaysFromAll.map((d) => d.day.tempHighF).sort((a, b) => a - b);
   const medianTemp = temps.length > 0 ? temps[Math.floor(temps.length / 2)] : 0;
   const OUTLIER_THRESHOLD = 15;
 
   const inRange = todaysFromAll.filter(
-    (day) => Math.abs(day.tempHighF - medianTemp) <= OUTLIER_THRESHOLD
+    ({ day }) => Math.abs(day.tempHighF - medianTemp) <= OUTLIER_THRESHOLD
   );
   const candidates = inRange.length > 0 ? inRange : todaysFromAll;
 
-  let bestDay: ForecastDay | null = null;
+  let best: { day: ForecastDay; provider: string } | null = null;
   let bestScore = -Infinity;
-  for (const day of candidates) {
-    const score = computeOptimismScore(day);
+  for (const entry of candidates) {
+    const score = computeOptimismScore(entry.day);
     if (score > bestScore) {
-      bestDay = day;
+      best = entry;
       bestScore = score;
     }
   }
@@ -76,7 +76,8 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
     provider: "Optimistic Blend",
     location: forecasts[0].location,
     fetchedAt: latestFetched,
-    daily: bestDay ? [bestDay] : [],
+    daily: best ? [best.day] : [],
+    sourceProvider: best?.provider,
   };
 }
 

@@ -15,9 +15,11 @@ function formatDate(dateStr: string): string {
 export function ForecastCard({
   day,
   embedded,
+  sourceProvider,
 }: {
   day: ForecastDay;
   embedded?: boolean;
+  sourceProvider?: string;
 }) {
   const content = (
     <>
@@ -47,10 +49,15 @@ export function ForecastCard({
           </p>
         </div>
         {day.icon && (
-          <span className="mr-5 shrink-0 text-9xl">{iconToEmoji(day.icon)}</span>
+          <span className="mr-5 shrink-0 text-9xl" aria-hidden>
+            {iconToEmoji(day.icon)}
+          </span>
         )}
       </div>
       <p className="mt-4 text-base italic text-black font-[family-name:var(--font-typewriter)]">Like any good blend, it&apos;s all about the ratio. We mix forecasts until the vibes hit different.</p>
+      {sourceProvider && (
+        <p className="mt-1 text-right text-xs text-black/70 font-[family-name:var(--font-typewriter)]">Today&apos;s blend from {sourceProvider}</p>
+      )}
     </>
   );
 

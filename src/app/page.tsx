@@ -32,7 +32,9 @@ export default async function Home() {
           </h2>
         </header>
 
-        <ForecastWithRefresh initialData={optimistic} />
+        <section aria-label="Today's forecast">
+          <ForecastWithRefresh initialData={optimistic} />
+        </section>
       </main>
     </div>
   );

@@ -12,6 +12,7 @@ export interface ForecastDay {
     location: string;
     fetchedAt: string;
     daily: ForecastDay[];
+    sourceProvider?: string;
   }
   //keeping same interface for consistency & future proofing even if morning brew doesnt currently support lat and lon
   //The contract is about the call shape and return type, not about how each provider uses the arguments.
