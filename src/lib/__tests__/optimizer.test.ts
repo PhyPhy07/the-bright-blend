@@ -56,7 +56,7 @@ describe("optimizer", () => {
     expect(result.sourceProvider).toBe("Pirate Weather");
   });
 
-  it("falls back to all forecasts when all are outliers", () => {
+  it("filters outliers and picks from in-range (7° threshold)", () => {
     const forecasts: NormalizedForecast[] = [
       { provider: "A", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 0 })] },
       { provider: "B", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 10 })] },
@@ -65,8 +65,9 @@ describe("optimizer", () => {
     ];
     const result = getOptimisticForecast(forecasts);
     expect(result.daily).toHaveLength(1);
-    expect(result.daily[0].tempHighF).toBe(100);
-    expect(result.sourceProvider).toBe("D");
+    // Median is 90; with 7° threshold, only 90 is in range (100 is 10° away)
+    expect(result.daily[0].tempHighF).toBe(90);
+    expect(result.sourceProvider).toBe("C");
   });
 
   it("uses the latest fetchedAt from all forecasts", () => {

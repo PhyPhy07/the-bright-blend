@@ -1,25 +1,10 @@
-import { getProviders } from "@/lib/providers/registry";
-import { getOptimisticForecast } from "@/lib/optimizer";
-import { getFulfilledValues } from "@/lib/utils/settledPromise";
+import { getCachedForecast } from "@/lib/fetchForecast";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
 export const dynamic = "force-dynamic";
-
-const NYC_LAT = 40.7128;
-const NYC_LON = -74.006;
-
+//without force-dynamic, Next.js might build and cache the page at deploy time, so everyone would see the same old forecast until the next deploy.
 export default async function Home() {
-  const providers = getProviders();
-  const results = await Promise.allSettled(
-    providers.map((p) => p.fetchForecast(NYC_LAT, NYC_LON))
-  );
-
-  const forecasts = getFulfilledValues(results);
-
-  const optimistic = {
-    ...getOptimisticForecast(forecasts),
-    allProvidersFailed: forecasts.length === 0,
-  };
+  const { optimistic } = await getCachedForecast();
 
   return (
     <div className="min-h-screen bg-white px-4 pt-4 pb-8">
