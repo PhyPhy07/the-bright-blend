@@ -58,15 +58,15 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
       <button
         onClick={handleRefresh}
         disabled={isRefreshing}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 font-bold transition disabled:opacity-50 font-[family-name:var(--font-typewriter)]"
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 text-2xl font-bold transition disabled:opacity-50 font-[family-name:var(--font-typewriter)]"
         style={{
-          borderColor: "#D5E5FE",
-          backgroundColor: "#D5E5FE",
-          color: "#1666C2",
-          boxShadow: "0 4px 6px -2px rgba(213, 229, 254, 0.3)",
+          borderColor: "#F9B423",
+          backgroundColor: "#F9B423",
+          color: "white",
+          boxShadow: "0 4px 6px -2px rgba(249, 180, 35, 0.3)",
         }}
       >
-        <SiCoffeescript className="text-xl" />
+        <SiCoffeescript className="text-3xl" />
         {isRefreshing ? "Rebrewing…" : "Rebrew"}
       </button>
     </div>

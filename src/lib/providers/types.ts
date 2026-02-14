@@ -14,6 +14,7 @@ export interface ForecastDay {
     daily: ForecastDay[];
   }
   //keeping same interface for consistency & future proofing even if morning brew doesnt currently support lat and lon
+  //The contract is about the call shape and return type, not about how each provider uses the arguments.
   export interface WeatherProvider {
     name: string;
     fetchForecast(lat: number, lon: number): Promise<NormalizedForecast>;

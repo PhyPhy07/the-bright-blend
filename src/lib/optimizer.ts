@@ -6,7 +6,7 @@ const SUNNY_ICONS = new Set<WeatherIcon>([
   "partly-cloudy-day",
   "partly-cloudy-night",
 ]);
-// The assignment needs “best (sunniest/warmest)” forecast. The bonus makes “sunniest” part of the score, not just “warmest” and “driest” , without the bonus, the score would be biased towards warmer and drier days.
+// Score = temp + sunny bonus (+10) - rain penalty. Higher is better.Bonus is to make sure the best day is the sunniest day and avoid warm and dry days. The sunny bonus (+10) is there so the score favors sunny forecasts, not just warm and dry ones.
 function computeOptimismScore(day: ForecastDay): number {
   const tempScore = day.tempHighF;
   const precipPenalty = day.precipitationChance * -0.5;
@@ -78,5 +78,6 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
     fetchedAt: latestFetched,
     daily: bestDay ? [bestDay] : [],
   };
-  //the flow is: fetch from all providers → normalize and filter to today → score each → pick the best → show that as the single “optimistic” forecast.
 }
+
+// Data flow: providers -> filter to today -> drop outliers -> score each -> return highest

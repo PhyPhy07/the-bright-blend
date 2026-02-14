@@ -1,6 +1,7 @@
 import { format, parseISO } from "date-fns";
 import type { ForecastDay } from "@/lib/providers/types";
 import { iconToEmoji } from "@/lib/utils/iconEmoji";
+import { getForecastSaying } from "@/lib/utils/forecastSayings";
 
 function formatDate(dateStr: string): string {
   try {
@@ -20,8 +21,8 @@ export function ForecastCard({
 }) {
   const content = (
     <>
-      <p className="mb-2 text-center text-lg font-normal uppercase tracking-wide font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
-        <span className="font-bold">Today&apos;s Forecast:</span> Hope with a High UV Index
+      <p className="mb-2 text-center text-lg font-normal tracking-wide font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
+        <span className="font-bold uppercase">Today&apos;s Forecast:</span> {getForecastSaying(day.icon)}
       </p>
       <p className="mb-4 text-center text-2xl text-black font-[family-name:var(--font-typewriter)]">
         {formatDate(day.date)}
