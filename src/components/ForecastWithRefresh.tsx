@@ -7,22 +7,24 @@ import { SiCoffeescript } from "react-icons/si";
 import { ForecastCard } from "./ForecastCard";
 
 interface ForecastWithRefreshProps {
-  initialData: NormalizedForecast;
+  initialData: NormalizedForecast & { allProvidersFailed?: boolean };
 }
 
 export default function ForecastWithRefresh({ initialData }: ForecastWithRefreshProps) {
-  const [forecast, setForecast] = useState<NormalizedForecast>(initialData);
+  const [forecast, setForecast] = useState(initialData);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
 
   async function handleRefresh() {
     setIsRefreshing(true);
+    setRefreshError(null);
     try {
       const res = await fetch(`/api/forecast?t=${Date.now()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch");
       const json = await res.json();
       setForecast(json.optimistic);
     } catch {
-      // Keep existing forecast on error
+      setRefreshError("Sorry, we spilled the beans. Please try again.");
     } finally {
       setIsRefreshing(false);
     }
@@ -51,9 +53,14 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
           </div>
         </div>
       ) : (
-        <p className="rounded-lg border border-black bg-white p-6 text-center text-black font-[family-name:var(--font-typewriter)]">
-          No forecast for today.
-        </p>
+        <div className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]">
+          <p className="text-black">
+            {forecast.allProvidersFailed
+              ? "Couldn't reach weather providers. Try again."
+              : "No forecast for today."}
+          </p>
+          {refreshError && <p className="text-red-500 text-sm">{refreshError}</p>}
+        </div>
       )}
       <button
         type="button"

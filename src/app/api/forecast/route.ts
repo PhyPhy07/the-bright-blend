@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProviders } from "../../../lib/providers/registry";
 import { getOptimisticForecast } from "@/lib/optimizer";
-import { NormalizedForecast } from "../../../lib/providers/types";
+import { getFulfilledValues } from "@/lib/utils/settledPromise";
 
 const NYC_LAT = 40.7128;
 const NYC_LON = -74.006;
@@ -12,11 +12,12 @@ export async function GET() {
     providers.map((p) => p.fetchForecast(NYC_LAT, NYC_LON))
   );
 
-  const forecasts = results
-    .filter((r) => r.status === "fulfilled")
-    .map((r) => (r as PromiseFulfilledResult<NormalizedForecast>).value);
+  const forecasts = getFulfilledValues(results);
 
-  const optimistic = getOptimisticForecast(forecasts);
+  const optimistic = {
+    ...getOptimisticForecast(forecasts),
+    allProvidersFailed: forecasts.length === 0,
+  };
 
   return NextResponse.json(
     { optimistic, providers: forecasts },

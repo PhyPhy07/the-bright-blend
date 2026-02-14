@@ -56,7 +56,7 @@ export function ForecastCard({
       </div>
       <p className="mt-4 text-base italic text-black font-[family-name:var(--font-typewriter)]">Like any good blend, it&apos;s all about the ratio. We mix forecasts until the vibes hit different.</p>
       {sourceProvider && (
-        <p className="mt-1 text-right text-xs text-black/70 font-[family-name:var(--font-typewriter)]">Today&apos;s blend from {sourceProvider}</p>
+        <p className="mt-1 text-right text-xs text-black/70 font-[family-name:var(--font-typewriter)]">Today&apos;s blend powered by {sourceProvider}</p>
       )}
     </>
   );

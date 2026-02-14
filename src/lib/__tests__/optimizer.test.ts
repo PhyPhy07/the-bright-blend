@@ -55,4 +55,27 @@ describe("optimizer", () => {
     expect(result.daily[0].tempHighF).toBe(72);
     expect(result.sourceProvider).toBe("Pirate Weather");
   });
+
+  it("falls back to all forecasts when all are outliers", () => {
+    const forecasts: NormalizedForecast[] = [
+      { provider: "A", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 0 })] },
+      { provider: "B", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 10 })] },
+      { provider: "C", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 90 })] },
+      { provider: "D", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay({ tempHighF: 100 })] },
+    ];
+    const result = getOptimisticForecast(forecasts);
+    expect(result.daily).toHaveLength(1);
+    expect(result.daily[0].tempHighF).toBe(100);
+    expect(result.sourceProvider).toBe("D");
+  });
+
+  it("uses the latest fetchedAt from all forecasts", () => {
+    const forecasts: NormalizedForecast[] = [
+      { provider: "A", location: "New York", fetchedAt: "2026-02-14T10:00:00Z", daily: [forecastDay()] },
+      { provider: "B", location: "New York", fetchedAt: "2026-02-14T15:00:00Z", daily: [forecastDay()] },
+      { provider: "C", location: "New York", fetchedAt: "2026-02-14T12:00:00Z", daily: [forecastDay()] },
+    ];
+    const result = getOptimisticForecast(forecasts);
+    expect(result.fetchedAt).toBe("2026-02-14T15:00:00Z");
+  });
 });

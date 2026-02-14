@@ -1,6 +1,7 @@
 import { getProviders } from "@/lib/providers/registry";
 import { getOptimisticForecast } from "@/lib/optimizer";
 import type { NormalizedForecast } from "@/lib/providers/types";
+import { getFulfilledValues } from "@/lib/utils/settledPromise";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +15,12 @@ export default async function Home() {
     providers.map((p) => p.fetchForecast(NYC_LAT, NYC_LON))
   );
 
-  const forecasts = results
-    .filter((r) => r.status === "fulfilled")
-    .map((r) => (r as PromiseFulfilledResult<NormalizedForecast>).value);
+  const forecasts = getFulfilledValues(results);
 
-  const optimistic = getOptimisticForecast(forecasts);
+  const optimistic = {
+    ...getOptimisticForecast(forecasts),
+    allProvidersFailed: forecasts.length === 0,
+  };
 
   return (
     <div className="min-h-screen bg-white px-4 pt-4 pb-8">
