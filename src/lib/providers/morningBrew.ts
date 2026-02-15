@@ -3,6 +3,7 @@ import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { wmoCodeToDisplay } from "@/lib/utils/wmoCodes";
 
 const MORNING_BREW_URL =
+  process.env.MORNING_BREW_API_URL ??
   "https://weather-ashy-gamma-36.vercel.app/api/forecast";
 
 export class MorningBrewProvider implements WeatherProvider {

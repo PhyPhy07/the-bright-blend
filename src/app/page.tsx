@@ -2,7 +2,8 @@ import { getCachedForecast } from "@/lib/fetchForecast";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
 
 export const dynamic = "force-dynamic";
-//without force-dynamic, Next.js might build and cache the page at deploy time, so everyone would see the same old forecast until the next deploy.
+
+// Server component: fetches cached forecast (5 min TTL), passes to client for display + Rebrew.
 export default async function Home() {
   const { optimistic } = await getCachedForecast();
 

@@ -47,7 +47,7 @@ Outlier filtering ensures one bad provider can't cause drastic swings (e.g. 60°
 ### Prerequisites
 
 - Node.js 18+
-- A [Pirate Weather](https://pirateweather.net) API key (free)
+- (Optional) A [Pirate Weather](https://pirateweather.net) API key (free) — app works with 2 providers without it
 
 ### Setup
 
@@ -59,10 +59,11 @@ cd the-bright-blend
 npm install
 ```
 
-2. Create `.env.local` and add your Pirate Weather API key:
+2. Copy `.env.example` to `.env.local` and add your Pirate Weather API key (optional; app runs with Open-Meteo + Morning Brew if omitted):
 
 ```
 PIRATE_WEATHER_API_KEY=your_key_here
+MORNING_BREW_API_URL=https://weather-ashy-gamma-36.vercel.app/api/forecast
 ```
 
 3. Run the development server:
