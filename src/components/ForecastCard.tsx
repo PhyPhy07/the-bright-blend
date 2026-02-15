@@ -23,7 +23,7 @@ export function ForecastCard({
 }) {
   const content = (
     <>
-      <p className="mb-2 text-center text-lg font-normal tracking-wide font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
+      <p className="mb-2 text-center text-lg font-normal tracking-wide text-brand-blue font-[family-name:var(--font-typewriter)]">
         <span className="font-bold uppercase">Today&apos;s Forecast:</span> {getForecastSaying(day.icon)}
       </p>
       <p className="mb-4 text-center text-2xl text-black font-[family-name:var(--font-typewriter)]">

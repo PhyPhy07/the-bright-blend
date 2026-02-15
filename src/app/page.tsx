@@ -12,9 +12,9 @@ export default async function Home() {
       <main className="mx-auto max-w-4xl">
         <header className="mb-4 text-center">
           <h1 className="text-7xl font-bold font-[family-name:var(--font-typewriter)]">
-            <span style={{ color: "black" }}>THE</span> <span style={{ color: "#F9B423" }}>BRIGHT</span> <span style={{ color: "black" }}>BLEND</span>
+            <span className="text-black">THE</span> <span className="text-brand-gold">BRIGHT</span> <span className="text-black">BLEND</span>
           </h1>
-          <h2 className="mt-2 text-2xl font-bold font-[family-name:var(--font-typewriter)]" style={{ color: "#1666C2" }}>
+          <h2 className="mt-2 text-2xl font-bold text-brand-blue font-[family-name:var(--font-typewriter)]">
             Optimistically delusional, by design.
           </h2>
         </header>

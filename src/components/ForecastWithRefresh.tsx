@@ -35,10 +35,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
   return (
     <div className="space-y-4">
       {today ? (
-        <div
-          className="flex overflow-hidden rounded-2xl border-2"
-          style={{ borderColor: "#D5E5FE", boxShadow: "0 10px 15px -3px rgba(213, 229, 254, 0.4), 0 4px 6px -2px rgba(213, 229, 254, 0.3)" }}
-        >
+        <div className="flex overflow-hidden rounded-2xl border-2 border-brand-blue-light shadow-brand-blue-light">
           <div className="min-w-[360px] flex-1 overflow-hidden">
             <Image
               src="/MORNING%20BREW%20LOGO%20EDIT.png"
@@ -68,13 +65,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
         disabled={isRefreshing}
         aria-busy={isRefreshing}
         aria-label={isRefreshing ? "Refreshing forecast" : "Refresh forecast"}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 px-4 py-3 text-2xl font-bold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F9B423] focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
-        style={{
-          borderColor: "#F9B423",
-          backgroundColor: "#F9B423",
-          color: "white",
-          boxShadow: "0 4px 6px -2px rgba(249, 180, 35, 0.3)",
-        }}
+        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-2xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
       >
         <SiCoffeescript className="text-3xl" aria-hidden />
         {isRefreshing ? "Rebrewing…" : "Rebrew"}
