@@ -22,7 +22,7 @@ The app selects the "best" forecast using:
 
 - **Temperature** — Higher is better
 - **Sunny bonus** — +10 for clear or partly cloudy conditions
-- **Precipitation penalty** — Lower rain chance is better
+- **Precipitation penalty** — −0.5 × precipitationChance (lower rain chance is better)
 
 Outlier filtering ensures one bad provider can't cause drastic swings (e.g. 60° → 38°).
 
@@ -83,3 +83,47 @@ npm run dev
 - **Provider registry** — Single source of truth for weather providers; add new providers by implementing the `WeatherProvider` interface and registering in `getProviders()`
 - **Normalized types** — `NormalizedForecast` and `ForecastDay` ensure consistency across providers
 - **Optimizer** — Pluggable scoring logic for selecting the "best" forecast
+
+## Future Scalability
+
+Upon future iterations of this application, I would consider implementing:
+
+### Caching & Performance
+
+- Shared cache (e.g. Redis) when running multiple instances so cache hits work across instances
+- Rate limiting on the API to avoid abuse and stay within provider limits
+
+### Providers & Data
+
+- **Searchable locations:** Add a search input, geocode to lat/lon, pass into `getCachedForecast(lat, lon)`, include location in cache key; Open-Meteo and Pirate Weather support any coordinates, Morning Brew stays NYC-only
+- **Adding more providers:** Implement the `WeatherProvider` interface, register in `getProviders()`; no changes needed in optimizer or UI
+- Search by zip code
+- 10-day weather outlook option
+- More fields to blend in the formula (e.g. wind, humidity) for favorable weather
+- Configurable optimizer (scoring weights, outlier threshold) without code changes
+
+### UX & Accessibility
+
+- Mobile view
+- Screen reader support and dynamic updates for screen readers
+- Dark mode
+
+### User Preferences
+
+- Save recent searches
+- Personal greetings
+- Optional email notifications for catastrophic weather in saved areas (freezes, snow storms, hurricanes) or supplemental email with newsletter
+
+### Observability
+
+- Logging and error tracking (e.g. Sentry)
+- Metrics (which provider wins most often, failure rates)
+- Monitoring/alerting for provider failures in dev communication channels
+
+### Flexibility
+
+- API versioning if the public API shape changes over time
+
+---
+
+*Dan Toomey is my hero.*
