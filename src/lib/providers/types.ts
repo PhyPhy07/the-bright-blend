@@ -6,7 +6,7 @@ export interface ForecastDay {
   precipitationChance: number;
   icon?: WeatherIcon;
 }
-  //
+  
   export interface NormalizedForecast {
     provider: string;
     location: string;
@@ -19,6 +19,15 @@ export interface ForecastDay {
   export interface WeatherProvider {
     name: string;
     fetchForecast(lat: number, lon: number): Promise<NormalizedForecast>;
+  }
+
+  /** Optimistic forecast with optional failure flag (from getCachedForecast) */
+  export type OptimisticForecast = NormalizedForecast & { allProvidersFailed?: boolean };
+
+  /** Response shape from /api/forecast */
+  export interface ForecastApiResponse {
+    optimistic: OptimisticForecast;
+    providers: NormalizedForecast[];
   }
 
   // icons for consistency across providers

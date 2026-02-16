@@ -1,14 +1,15 @@
 import { unstable_cache } from "next/cache";
+import type { ForecastApiResponse } from "./providers/types";
 import { getProviders } from "./providers/registry";
 import { getOptimisticForecast } from "./optimizer";
-import { getFulfilledValues } from "./utils/settledPromise";
+import { getFulfilledValues } from "./utils/getFulfilledValues";
 
 const NYC_LAT = 40.7128;
 const NYC_LON = -74.006;
 
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
-//fetches the forecast from the providers and returns the blended forecast
-async function fetchOptimisticForecast() {
+//fetches the forecast from the providers and returns the blended forecast and raw forecasts
+async function fetchOptimisticForecast(): Promise<ForecastApiResponse> {
   const providers = getProviders();
   const results = await Promise.allSettled(
     providers.map((p) => p.fetchForecast(NYC_LAT, NYC_LON))

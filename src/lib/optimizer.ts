@@ -30,6 +30,8 @@ function normalizeDate(dateStr: string): string {
   }
 }
 
+type DayWithProvider = { day: ForecastDay; provider: string };
+
 export function getOptimisticForecast(forecasts: NormalizedForecast[]): NormalizedForecast {
   if (forecasts.length === 0) {
     return {
@@ -41,7 +43,7 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
   }
 
   const today = getTodayDateNYC();
-  const todaysFromAll: { day: ForecastDay; provider: string }[] = [];
+  const todaysFromAll: DayWithProvider[] = [];
 
   for (const forecast of forecasts) {
     const todaysDay = forecast.daily.find((day) => normalizeDate(day.date) === today);
@@ -57,7 +59,7 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
   );
   const candidates = inRange.length > 0 ? inRange : todaysFromAll;
 
-  let best: { day: ForecastDay; provider: string } | null = null;
+  let best: DayWithProvider | null = null;
   let bestScore = -Infinity;
   for (const entry of candidates) {
     const score = computeOptimismScore(entry.day);

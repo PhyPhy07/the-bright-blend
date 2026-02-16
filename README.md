@@ -100,7 +100,8 @@ Upon future iterations of this application, I would consider implementing:
 - Search by zip code
 - 10-day weather outlook option
 - More fields to blend in the formula (e.g. wind, humidity) for favorable weather
-- Configurable optimizer (scoring weights, outlier threshold) without code changes
+- Configurable optimizer (scoring weights, outlier threshold) 
+- Implementing Zod for runtime validation to catch bad data early 
 
 ### UX & Accessibility
 

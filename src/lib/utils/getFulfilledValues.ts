@@ -3,4 +3,4 @@ export function getFulfilledValues<T>(results: PromiseSettledResult<T>[]): T[] {
     .filter((r): r is PromiseFulfilledResult<T> => r.status === "fulfilled")
     .map((r) => r.value);
 }
-//getFulfilledValues is a utility function that returns the fulfilled values of a promise.allSettled array.
+//takes successful results from promise.allSettled 

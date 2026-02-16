@@ -1,4 +1,4 @@
-import { getFulfilledValues } from "../settledPromise"
+import { getFulfilledValues } from "../getFulfilledValues"
 
 
 describe("getFulfilledValues", () => {

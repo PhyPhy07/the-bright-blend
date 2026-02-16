@@ -12,7 +12,10 @@ describe("getForecastSaying", () => {
   });
 
   it("returns the fallback for unknown icon", () => {
-    // TypeScript allows WeatherIcon, but at runtime an invalid value could slip through
-    expect(getForecastSaying("unknown" as any)).toBe("Warm front of unexpected good news");
+    // Simulates invalid value at runtime (e.g. from external API)
+    const invalidIcon = "unknown";
+    expect(getForecastSaying(invalidIcon as Parameters<typeof getForecastSaying>[0])).toBe(
+      "Warm front of unexpected good news"
+    );
   });
 });

@@ -57,3 +57,4 @@ export function toWeatherIcon(value: string | undefined): WeatherIcon {
     ? (normalized as WeatherIcon)
     : "cloudy" as WeatherIcon;
 }
+//two out of 3 providers use wmo codes, pirate weather uses strings

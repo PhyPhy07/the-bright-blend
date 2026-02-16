@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -17,11 +18,11 @@ export const metadata: Metadata = {
   title: "The Bright Blend | Optimistic NYC Weather",
   description: "The most optimistic weather forecast for New York City—we blend multiple sources to show you the sunniest, warmest outlook.",
 };
-
+//root layout component that sets fonts, metadata,and wraps all pages
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">

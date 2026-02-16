@@ -1,7 +1,13 @@
 import { format, parseISO } from "date-fns";
 import type { ForecastDay } from "@/lib/providers/types";
-import { iconToEmoji } from "@/lib/utils/iconEmoji";
+import { iconToEmoji } from "@/lib/utils/renderWeatherIcon";
 import { getForecastSaying } from "@/lib/utils/forecastSayings";
+
+interface ForecastCardProps {
+  day: ForecastDay;
+  embedded?: boolean;
+  sourceProvider?: string;
+}
 
 function formatDate(dateStr: string): string {
   try {
@@ -12,15 +18,7 @@ function formatDate(dateStr: string): string {
   }
 }
 
-export function ForecastCard({
-  day,
-  embedded,
-  sourceProvider,
-}: {
-  day: ForecastDay;
-  embedded?: boolean;
-  sourceProvider?: string;
-}) {
+export function ForecastCard({ day, embedded, sourceProvider }: ForecastCardProps) {
   const content = (
     <>
       <p className="mb-2 text-center text-lg font-normal tracking-wide text-brand-blue font-[family-name:var(--font-typewriter)]">
@@ -60,7 +58,7 @@ export function ForecastCard({
       )}
     </>
   );
-
+//renders the content of the forecast card 
   if (embedded) return content;
   return (
     <div className="rounded-xl border border-black bg-white p-6 shadow-lg">

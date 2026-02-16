@@ -1,17 +1,17 @@
 "use client";
 
-import { NormalizedForecast } from "@/lib/providers/types";
+import type { ForecastApiResponse, OptimisticForecast } from "@/lib/providers/types";
 import Image from "next/image";
 import { useState } from "react";
 import { SiCoffeescript } from "react-icons/si";
 import { ForecastCard } from "./ForecastCard";
 
 interface ForecastWithRefreshProps {
-  initialData: NormalizedForecast & { allProvidersFailed?: boolean };
+  initialData: OptimisticForecast;
 }
 
 export default function ForecastWithRefresh({ initialData }: ForecastWithRefreshProps) {
-  const [forecast, setForecast] = useState(initialData);
+  const [forecast, setForecast] = useState<OptimisticForecast>(initialData);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
     try {
       const res = await fetch(`/api/forecast?t=${Date.now()}`, { cache: "no-store" });
       if (!res.ok) throw new Error("Failed to fetch");
-      const json = await res.json();
+      const json: ForecastApiResponse = await res.json();
       setForecast(json.optimistic);
     } catch {
       setRefreshError("Sorry, we spilled the beans. Please try again.");

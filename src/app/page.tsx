@@ -1,9 +1,9 @@
 import { getCachedForecast } from "@/lib/fetchForecast";
 import ForecastWithRefresh from "@/components/ForecastWithRefresh";
-
+//tells next.js to re-render the page on every request, ensures forecast is fresh when cache expires
 export const dynamic = "force-dynamic";
 
-// Server component: fetches cached forecast (5 min TTL), passes to client for display + Rebrew.
+// Server component: Server component that fetches the cached forecast and passes it to the client for display and Rebrew.
 export default async function Home() {
   const { optimistic } = await getCachedForecast();
 
