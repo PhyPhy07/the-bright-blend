@@ -10,17 +10,11 @@
 
 ## How It Works
 
-### Flow
+### Data Flow
 
-```
-User visits the app (or clicks Rebrew)
-    → Server fetches from Open-Meteo, Pirate Weather, and Morning Brew
-    → Normalizes dates and filters to today's forecast for NYC
-    → Drops outliers (forecasts >15°F from median)
-    → Scores each: temp + sunny bonus − precip penalty
-    → Picks the highest-scoring forecast
-    → Displays the optimistic result
-```
+![The Bright Blend Data Flow](assets/BrightBlendDataFlow.png)
+
+**Summary:** User visits the page or clicks Rebrew → `getCachedForecast()` checks a 5‑min cache → on miss, fetches from Open-Meteo, Pirate Weather, and Morning Brew in parallel → `getOptimisticForecast` filters to today, drops outliers (±7°F from median), scores (temp + sun − rain), picks best → ForecastCard UI displays the result.
 
 ### Optimistic Scoring
 
