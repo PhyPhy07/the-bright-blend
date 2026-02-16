@@ -44,7 +44,7 @@ export class PirateWeatherProvider implements WeatherProvider {
     const daily: ForecastDay[] = days.map((day) => {
       const tempHigh = day.temperatureHigh ?? day.temperatureMax ?? 0;
       const tempLow = day.temperatureLow ?? day.temperatureMin ?? 0;
-      const precipPct = Math.round(day.precipProbability * 100);
+      const precipPct = Math.min(100, Math.max(0, Math.round(day.precipProbability * 100)));
 
       return createForecastDay({
         date: unixToDateString(day.time),
