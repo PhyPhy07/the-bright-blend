@@ -1,6 +1,6 @@
 # The Bright Blend
 
-**The Bright Blend** — formerly known as: "It’s Always Sunny in New York" A weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for NYC —  regardless of reality.
+**The Bright Blend** — formerly known as: "It’s Always Sunny in New York" is a weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for NYC —  regardless of reality.
 
 ## Live App
 
@@ -120,7 +120,7 @@ Upon future iterations of this application, I would consider implementing:
 - **Searchable locations:** Add a search input, geocode to lat/lon, pass into `getCachedForecast(lat, lon)`, include location in cache key; Open-Meteo and Pirate Weather support any coordinates, Morning Brew stays NYC-only
 - **Adding more providers:** Implement the `WeatherProvider` interface, register in `getProviders()`; no changes needed in optimizer or UI
 - Search by zip code
-- 10-day weather outlook option
+- 10-day weather outlook option, comparable views option
 - More fields to blend in the formula (e.g. wind, humidity) for favorable weather
 - Configurable optimizer (scoring weights, outlier threshold) without code changes
 - Runtime validation (e.g. Zod) for API responses when exposing externally
@@ -149,4 +149,4 @@ Upon future iterations of this application, I would consider implementing:
 
 ---
 
-*Dan Toomey is my hero.*
+*🤠Dan Toomey is my hero.☀️*
