@@ -55,6 +55,11 @@ npm install
 
 2. Copy `.env.example` to `.env.local` and add your Pirate Weather API key (optional; app runs with Open-Meteo + Morning Brew if omitted):
 
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your key:
 ```
 PIRATE_WEATHER_API_KEY=your_key_here
 MORNING_BREW_API_URL=https://weather-ashy-gamma-36.vercel.app/api/forecast
@@ -67,6 +72,12 @@ npm run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000)
+
+5. Run tests (optional):
+
+```bash
+npm test
+```
 
 ---
 
@@ -84,6 +95,17 @@ npm run dev
 - **Normalized types** — `NormalizedForecast` and `ForecastDay` ensure consistency across providers
 - **Optimizer** — Pluggable scoring logic for selecting the "best" forecast
 
+### Project Structure
+
+| Path | Purpose |
+|------|---------|
+| `src/app/page.tsx` | Server component; fetches forecast, passes to client |
+| `src/app/api/forecast/route.ts` | API route for Rebrew refresh |
+| `src/lib/fetchForecast.ts` | Cached fetch orchestration (5 min TTL) |
+| `src/lib/optimizer.ts` | Picks best forecast (filter → outliers → score) |
+| `src/lib/providers/` | Provider implementations + registry |
+| `src/components/` | ForecastWithRefresh (client), ForecastCard (UI) |
+
 ## Future Scalability
 
 Upon future iterations of this application, I would consider implementing:
@@ -100,8 +122,8 @@ Upon future iterations of this application, I would consider implementing:
 - Search by zip code
 - 10-day weather outlook option
 - More fields to blend in the formula (e.g. wind, humidity) for favorable weather
-- Configurable optimizer (scoring weights, outlier threshold) 
-- Implementing Zod for runtime validation to catch bad data early 
+- Configurable optimizer (scoring weights, outlier threshold) without code changes
+- Runtime validation (e.g. Zod) for API responses when exposing externally
 
 ### UX & Accessibility
 
