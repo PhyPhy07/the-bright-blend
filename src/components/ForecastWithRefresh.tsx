@@ -35,7 +35,11 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
   return (
     <div className="space-y-4">
       {today ? (
-        <div className="flex overflow-hidden rounded-2xl border-2 border-brand-blue-light shadow-brand-blue-light">
+        <div
+          className="flex overflow-hidden rounded-2xl border-2 border-brand-blue-light shadow-brand-blue-light"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <div className="min-w-[360px] flex-1 overflow-hidden">
             <Image
               src="/MORNING%20BREW%20LOGO%20EDIT.png"
@@ -50,13 +54,21 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
           </div>
         </div>
       ) : (
-        <div className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]">
+        <div
+          className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           <p className="text-black">
             {forecast.allProvidersFailed
               ? "Couldn't reach weather providers. Try again."
               : "No forecast for today."}
           </p>
-          {refreshError && <p className="text-red-500 text-sm">{refreshError}</p>}
+          {refreshError && (
+            <p className="text-red-500 text-sm" role="alert">
+              {refreshError}
+            </p>
+          )}
         </div>
       )}
       <button

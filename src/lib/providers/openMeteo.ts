@@ -12,7 +12,7 @@ interface OpenMeteoResponse {
     precipitation_probability_max?: (number | null)[];
     weathercode?: (number | null)[];
   };
-  // TODO: add more fields as needed or remove fields that are not needed
+ 
 }
 
 export class OpenMeteoProvider implements WeatherProvider {
