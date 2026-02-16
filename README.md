@@ -1,4 +1,4 @@
-# The Bright Blend
+# The Bright Blend ☕️
 
 **The Bright Blend** — formerly known as: "It’s Always Sunny in New York" is a weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for NYC —  regardless of reality.
 
@@ -24,7 +24,7 @@ The app selects the "best" forecast using:
 - **Sunny bonus** — +10 for clear or partly cloudy conditions
 - **Precipitation penalty** — −0.5 × precipitationChance (lower rain chance is better)
 
-Outlier filtering ensures one bad provider can't cause drastic swings (e.g. 60° → 38°).
+Outlier filtering drops forecasts whose high temp is more than ±7°F from the median of all providers, so one bad provider can't cause drastic swings (e.g. 60° → 38°).
 
 ### Providers
 
