@@ -53,7 +53,13 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
             <ForecastCard day={today} embedded sourceProvider={forecast.sourceProvider} />
           </div>
         </div>
-      ) : (
+      ) : null}
+      {refreshError && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-center text-sm text-red-700 font-[family-name:var(--font-typewriter)]" role="alert">
+          {refreshError}
+        </p>
+      )}
+      {!today ? (
         <div
           className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]"
           aria-live="polite"
@@ -64,13 +70,8 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
               ? "Couldn't reach weather providers. Try again."
               : "No forecast for today."}
           </p>
-          {refreshError && (
-            <p className="text-red-500 text-sm" role="alert">
-              {refreshError}
-            </p>
-          )}
         </div>
-      )}
+      ) : null}
       <button
         type="button"
         onClick={handleRefresh}
