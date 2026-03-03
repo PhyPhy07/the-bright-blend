@@ -1,6 +1,7 @@
 import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { createForecastDay } from "@/lib/utils/forecast";
 import { toWeatherIcon } from "@/lib/utils/wmoCodes";
+import { fetchWithRetry } from "@/lib/utils/fetchWithRetry";
 //pirate weather api response type
 interface PirateWeatherDailyData {
   time: number;
@@ -33,7 +34,7 @@ export class PirateWeatherProvider implements WeatherProvider {
     if (!apiKey) throw new Error("PIRATE_WEATHER_API_KEY is not set");
 
     const url = `https://api.pirateweather.net/forecast/${apiKey}/${lat},${lon}?units=us`;
-    const res = await fetch(url);
+    const res = await fetchWithRetry(url);
     if (!res.ok) throw new Error(`Pirate Weather API error: ${res.status}`);
 
     const data: PirateWeatherResponse = await res.json();

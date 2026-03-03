@@ -1,6 +1,7 @@
 import { createForecastDay } from "../utils/forecast";
 import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { wmoCodeToDisplay } from "@/lib/utils/wmoCodes";
+import { fetchWithRetry } from "@/lib/utils/fetchWithRetry";
 
 const OPEN_METEO_BASE = "https://api.open-meteo.com/v1/forecast";
 //open meteo api response type
@@ -28,7 +29,7 @@ export class OpenMeteoProvider implements WeatherProvider {
       timezone: "auto",
     });
 
-    const res = await fetch(`${OPEN_METEO_BASE}?${params}`);
+    const res = await fetchWithRetry(`${OPEN_METEO_BASE}?${params}`);
     if (!res.ok) throw new Error(`Open-Meteo API error: ${res.status}`);
 
     const data = (await res.json()) as OpenMeteoResponse;

@@ -36,17 +36,25 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
     <div className="space-y-4">
       {today ? (
         <div
-          className="flex overflow-hidden rounded-2xl border-2 border-brand-blue-light shadow-brand-blue-light"
+          className="flex flex-col overflow-hidden rounded-2xl border-2 border-brand-blue-light shadow-brand-blue-light md:flex-row"
           aria-live="polite"
           aria-atomic="true"
         >
-          <div className="min-w-[360px] flex-1 overflow-hidden">
+          <div className="relative aspect-[9/16] w-full shrink-0 overflow-hidden md:min-w-[360px] md:flex-1 md:aspect-auto md:min-h-[280px]">
+            <Image
+              src="/mobileview.png"
+              alt="The Bright Blend"
+              fill
+              className="object-cover md:hidden"
+              sizes="100vw"
+              priority
+            />
             <Image
               src="/MORNING%20BREW%20LOGO%20EDIT.png"
               alt="Morning Brew logo"
               width={360}
               height={280}
-              className="h-full min-h-[280px] w-full object-cover"
+              className="hidden h-full min-h-[280px] w-full object-cover md:block"
             />
           </div>
           <div className="flex-1 bg-white p-5 min-w-0">

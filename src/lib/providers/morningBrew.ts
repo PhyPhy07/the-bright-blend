@@ -1,6 +1,7 @@
 import { createForecastDay } from "../utils/forecast";
 import type { NormalizedForecast, ForecastDay, WeatherProvider } from "./types";
 import { wmoCodeToDisplay } from "@/lib/utils/wmoCodes";
+import { fetchWithRetry } from "@/lib/utils/fetchWithRetry";
 
 const MORNING_BREW_URL =
   process.env.MORNING_BREW_API_URL ??
@@ -25,7 +26,7 @@ export class MorningBrewProvider implements WeatherProvider {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- lat/lon required by interface; Morning Brew uses fixed location
   async fetchForecast(_lat: number, _lon: number): Promise<NormalizedForecast> {
-    const res = await fetch(MORNING_BREW_URL);
+    const res = await fetchWithRetry(MORNING_BREW_URL);
     if (!res.ok) throw new Error(`Morning Brew API error: ${res.status}`);
 
     const data = (await res.json()) as MorningBrewApiResponse;
