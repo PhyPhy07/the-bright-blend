@@ -126,7 +126,7 @@ Upon future iterations of this application, I would consider implementing:
 
 ### UX & Accessibility
 
-- Mobile view
+- Mobile view - DONE ->Implemented 3/3/26 
 - Screen reader support and dynamic updates for screen readers
 - Dark mode
 
