@@ -3,7 +3,6 @@
 import type { ForecastApiResponse, OptimisticForecast } from "@/lib/providers/types";
 import Image from "next/image";
 import { useState } from "react";
-import { SiCoffeescript } from "react-icons/si";
 import { ForecastCard } from "./ForecastCard";
 
 interface ForecastWithRefreshProps {
@@ -43,15 +42,15 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
           <div className="relative aspect-[9/16] w-full shrink-0 overflow-hidden md:min-w-[360px] md:flex-1 md:aspect-auto md:min-h-[280px]">
             <Image
               src="/mobileview.png"
-              alt="The Bright Blend"
+              alt="The Weather Wonder"
               fill
               className="object-cover md:hidden"
               sizes="100vw"
               priority
             />
             <Image
-              src="/MORNING%20BREW%20LOGO%20EDIT.png"
-              alt="Morning Brew logo"
+              src="/weatherwonder.png"
+              alt="Weather Wonder"
               width={360}
               height={280}
               className="hidden h-full min-h-[280px] w-full object-cover md:block"
@@ -91,8 +90,8 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
         aria-label={isRefreshing ? "Refreshing forecast" : "Refresh forecast"}
         className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-2xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
       >
-        <SiCoffeescript className="text-3xl" aria-hidden />
-        {isRefreshing ? "Rebrewing…" : "Rebrew"}
+        <Image src="/lightning.svg" alt="" width={32} height={32} className="brightness-0 invert" aria-hidden />
+        {isRefreshing ? "Remixing…" : "Remix"}
       </button>
     </div>
   );

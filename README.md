@@ -1,6 +1,6 @@
-# The Bright Blend ☕️
+# WEATHER WONDER
 
-**The Bright Blend** — formerly known as: "It’s Always Sunny in New York" is a weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for NYC —  regardless of reality.
+**Weather Wonder** — A weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for the U.S. —  regardless of reality.
 
 ## Live App
 
@@ -12,9 +12,9 @@
 
 ### Data Flow
 
-![The Bright Blend Data Flow](assets/BrightBlendDataFlow.png)
+![The Weather Wonder Data Flow](assets/BrightBlendDataFlow.png)
 
-**Summary:** User visits the page or clicks Rebrew → `getCachedForecast()` checks a 5‑min cache → on miss, fetches from Open-Meteo, Pirate Weather, and Morning Brew in parallel → `getOptimisticForecast` filters to today, drops outliers (±7°F from median), scores (temp + sun − rain), picks best → ForecastCard UI displays the result.
+**Summary:** User visits the page or clicks Rebrew → `getCachedForecast()` checks a 5‑min cache → on miss, fetches from Open-Meteo, Pirate Weather, and Weather.gov in parallel → `getOptimisticForecast` filters to today, drops outliers (±7°F from median), scores (temp + sun − rain), picks best → ForecastCard UI displays the result.
 
 ### Optimistic Scoring
 
@@ -32,7 +32,7 @@ Outlier filtering drops forecasts whose high temp is more than ±7°F from the m
 |----------|-----|--------------|
 | Open-Meteo | [open-meteo.com](https://open-meteo.com) | No |
 | Pirate Weather | [pirateweather.net](https://pirateweather.net) | Yes |
-| Morning Brew | [weather-ashy-gamma-36.vercel.app](https://weather-ashy-gamma-36.vercel.app/api/forecast) | No |
+| Weather.gov | [api.weather.gov](https://api.weather.gov) | No |
 
 ---
 
@@ -53,7 +53,7 @@ cd the-bright-blend
 npm install
 ```
 
-2. Copy `.env.example` to `.env.local` and add your Pirate Weather API key (optional; app runs with Open-Meteo + Morning Brew if omitted):
+2. Copy `.env.example` to `.env.local` and add your Pirate Weather API key (optional; app runs with Open-Meteo + Weather.gov if omitted):
 
 ```bash
 cp .env.example .env.local
@@ -62,7 +62,6 @@ cp .env.example .env.local
 Edit `.env.local` and add your key:
 ```
 PIRATE_WEATHER_API_KEY=your_key_here
-MORNING_BREW_API_URL=https://weather-ashy-gamma-36.vercel.app/api/forecast
 ```
 
 3. Run the development server:
@@ -117,7 +116,7 @@ Upon future iterations of this application, I would consider implementing:
 
 ### Providers & Data
 
-- **Searchable locations:** Add a search input, geocode to lat/lon, pass into `getCachedForecast(lat, lon)`, include location in cache key; Open-Meteo and Pirate Weather support any coordinates, Morning Brew stays NYC-only
+- **Searchable locations:** Add a search input, geocode to lat/lon, pass into `getCachedForecast(lat, lon)`, include location in cache key; Open-Meteo and Pirate Weather support any coordinates, Weather.gov is US-only
 - **Adding more providers:** Implement the `WeatherProvider` interface, register in `getProviders()`; no changes needed in optimizer or UI
 - 10-day weather outlook option, comparable views option
 - More fields to blend in the formula (e.g. wind, humidity) for favorable weather

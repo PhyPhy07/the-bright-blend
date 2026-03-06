@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The Bright Blend | Optimistic NYC Weather",
-  description: "The most optimistic weather forecast for New York City—we blend multiple sources to show you the sunniest, warmest outlook.",
+  title: "Weather Wonder | Optimistic US Weather",
+  description: "The most optimistic weather forecast for the United States—we blend multiple sources to show you the sunniest, warmest outlook.",
 };
 //root layout component that sets fonts, metadata,and wraps all pages
 export default function RootLayout({
