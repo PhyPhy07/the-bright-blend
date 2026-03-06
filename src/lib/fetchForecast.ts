@@ -5,8 +5,9 @@ import { getOptimisticForecast } from "./optimizer";
 import { getFulfilledValues } from "./utils/getFulfilledValues";
 import { fetchWeatherFactors } from "./utils/weatherFactors";
 
-export const DEFAULT_LAT = 40.7128;
-export const DEFAULT_LON = -74.006;
+// Conroe, Texas
+export const DEFAULT_LAT = 30.3119;
+export const DEFAULT_LON = -95.4561;
 
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
 
