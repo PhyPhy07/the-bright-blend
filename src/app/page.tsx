@@ -1,9 +1,9 @@
 import { getCachedForecast } from "@/lib/fetchForecast";
-import ForecastWithRefresh from "@/components/ForecastWithRefresh";
+import ForecastSection from "@/components/ForecastSection";
 //tells next.js to re-render the page on every request, ensures forecast is fresh when cache expires
 export const dynamic = "force-dynamic";
 
-// Server component that fetches the cached forecast and passes it to the client for display and Rebrew.
+// Server component that fetches the cached forecast and passes it to the client for display and Remix.
 export default async function Home() {
   const { optimistic } = await getCachedForecast();
 
@@ -18,10 +18,7 @@ export default async function Home() {
             Optimistically delusional, by design.
           </h2>
         </header>
-
-        <section aria-label="Today's forecast">
-          <ForecastWithRefresh initialData={optimistic} />
-        </section>
+        <ForecastSection initialData={optimistic} />
       </main>
     </div>
   );
