@@ -6,6 +6,7 @@ import { getForecastSaying } from "@/lib/utils/forecastSayings";
 interface ForecastCardProps {
   day: ForecastDay;
   embedded?: boolean;
+  locationName?: string;
   sourceProvider?: string;
 }
 
@@ -18,11 +19,12 @@ function formatDate(dateStr: string): string {
   }
 }
 
-export function ForecastCard({ day, embedded, sourceProvider }: ForecastCardProps) {
+export function ForecastCard({ day, embedded, locationName, sourceProvider }: ForecastCardProps) {
   const content = (
     <>
       <p className="mb-2 text-center text-lg font-normal tracking-wide text-brand-blue font-[family-name:var(--font-typewriter)]">
-        <span className="font-bold uppercase">Today&apos;s Forecast:</span> {getForecastSaying(day.icon)}
+        <span className="font-bold uppercase">Today&apos;s Forecast</span>
+        {locationName ? ` for ${locationName}` : ""}: {getForecastSaying(day.icon)}
       </p>
       <p className="mb-4 text-center text-2xl text-black font-[family-name:var(--font-typewriter)]">
         {formatDate(day.date)}
@@ -52,7 +54,7 @@ export function ForecastCard({ day, embedded, sourceProvider }: ForecastCardProp
           </span>
         )}
       </div>
-      <p className="mt-4 text-base italic text-black font-[family-name:var(--font-typewriter)]">Like any good blend, it&apos;s all about the ratio. We mix forecasts until the vibes hit different.</p>
+      <p className="mt-4 text-base italic text-black font-[family-name:var(--font-typewriter)]">Pandora had hope, we have an algorithm to keep it alive.</p>
       {sourceProvider && (
         <p className="mt-1 text-right text-xs text-black/70 font-[family-name:var(--font-typewriter)]">Today&apos;s blend powered by {sourceProvider}</p>
       )}

@@ -1,6 +1,10 @@
 # WEATHER WONDER
 
-**Weather Wonder** — A weather app that refuses to be pessimistic. It pulls forecasts from multiple weather providers and always shows you the sunniest, warmest outlook for the U.S. —  regardless of reality.
+**Weather Wonder** — Weather Wonder doesn't just show you the weather — it finds the best version of it.
+
+By blending three leading weather providers through a smart scoring algorithm, Weather Wonder always surfaces the most optimistic, sunshine-forward forecast available. Less rain. More hope. Always by design.
+
+Pandora had hope. We have an algorithm to keep it alive.
 
 ## Live App
 
@@ -147,4 +151,4 @@ Upon future iterations of this application, I would consider implementing:
 
 ---
 
-*🤠Dan Toomey is my hero.☀️*
+

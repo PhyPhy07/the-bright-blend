@@ -4,15 +4,15 @@ import { getProviders } from "./providers/registry";
 import { getOptimisticForecast } from "./optimizer";
 import { getFulfilledValues } from "./utils/getFulfilledValues";
 
-const NYC_LAT = 40.7128;
-const NYC_LON = -74.006;
+export const DEFAULT_LAT = 40.7128;
+export const DEFAULT_LON = -74.006;
 
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
-//fetches the forecast from the providers and returns the blended forecast and raw forecasts
-async function fetchOptimisticForecast(): Promise<ForecastApiResponse> {
+
+async function fetchOptimisticForecast(lat: number, lon: number): Promise<ForecastApiResponse> {
   const providers = getProviders();
   const results = await Promise.allSettled(
-    providers.map((p) => p.fetchForecast(NYC_LAT, NYC_LON))
+    providers.map((p) => p.fetchForecast(lat, lon))
   );
   const forecasts = getFulfilledValues(results);
   const optimistic = {
@@ -21,9 +21,22 @@ async function fetchOptimisticForecast(): Promise<ForecastApiResponse> {
   };
   return { optimistic, providers: forecasts };
 }
-//wraps the fetchOptimisticForecast function in an unstable_cache function to cache the result for 5 minutes based on the key "forecast-nyc"
+
+function cacheKey(lat: number, lon: number) {
+  return ["forecast", lat.toFixed(2), lon.toFixed(2)];
+}
+
 export const getCachedForecast = unstable_cache(
-  fetchOptimisticForecast,
-  ["forecast-nyc"],
+  async () => fetchOptimisticForecast(DEFAULT_LAT, DEFAULT_LON),
+  cacheKey(DEFAULT_LAT, DEFAULT_LON),
   { revalidate: CACHE_REVALIDATE_SECONDS }
 );
+
+export async function getCachedForecastForCoords(lat: number, lon: number): Promise<ForecastApiResponse> {
+  const cached = unstable_cache(
+    async () => fetchOptimisticForecast(lat, lon),
+    cacheKey(lat, lon),
+    { revalidate: CACHE_REVALIDATE_SECONDS }
+  );
+  return cached();
+}

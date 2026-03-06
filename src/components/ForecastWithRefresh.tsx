@@ -1,16 +1,18 @@
 "use client";
 
-import type { ForecastApiResponse, OptimisticForecast } from "@/lib/providers/types";
+import type { OptimisticForecast } from "@/lib/providers/types";
 import Image from "next/image";
 import { useState } from "react";
+import ErrorAlert from "./ErrorAlert";
 import { ForecastCard } from "./ForecastCard";
 
 interface ForecastWithRefreshProps {
-  initialData: OptimisticForecast;
+  forecast: OptimisticForecast;
+  locationName?: string;
+  onRefresh: () => Promise<void>;
 }
 
-export default function ForecastWithRefresh({ initialData }: ForecastWithRefreshProps) {
-  const [forecast, setForecast] = useState<OptimisticForecast>(initialData);
+export default function ForecastWithRefresh({ forecast, locationName, onRefresh }: ForecastWithRefreshProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
 
@@ -18,10 +20,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
     setIsRefreshing(true);
     setRefreshError(null);
     try {
-      const res = await fetch(`/api/forecast?t=${Date.now()}`, { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to fetch");
-      const json: ForecastApiResponse = await res.json();
-      setForecast(json.optimistic);
+      await onRefresh();
     } catch {
       setRefreshError("Sorry, we spilled the beans. Please try again.");
     } finally {
@@ -57,18 +56,16 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
             />
           </div>
           <div className="flex-1 bg-white p-5 min-w-0">
-            <ForecastCard day={today} embedded sourceProvider={forecast.sourceProvider} />
+            <ForecastCard
+              day={today}
+              embedded
+              locationName={locationName ?? forecast.location}
+              sourceProvider={forecast.sourceProvider}
+            />
           </div>
         </div>
       ) : null}
-      {refreshError && (
-        <p
-          className="rounded-lg border-2 border-red-500 bg-red-100 px-4 py-3 text-center text-base font-semibold text-red-800 font-[family-name:var(--font-typewriter)]"
-          role="alert"
-        >
-          {refreshError}
-        </p>
-      )}
+      {refreshError && <ErrorAlert message={refreshError} />}
       {!today ? (
         <div
           className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]"
@@ -91,7 +88,7 @@ export default function ForecastWithRefresh({ initialData }: ForecastWithRefresh
         className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-2xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
       >
         <Image src="/lightning.svg" alt="" width={32} height={32} className="brightness-0 invert" aria-hidden />
-        {isRefreshing ? "Remixing…" : "Remix"}
+        {isRefreshing ? "Revealing…" : "Reveal"}
       </button>
     </div>
   );
