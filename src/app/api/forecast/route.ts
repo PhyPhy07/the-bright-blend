@@ -12,9 +12,9 @@ function parseCoords(searchParams: URLSearchParams): { lat: number; lon: number 
 
 export async function GET(request: NextRequest) {
   const coords = parseCoords(request.nextUrl.searchParams);
-  const { optimistic, providers } = coords
+  const { optimistic, providers, weatherFactors } = coords
     ? await getCachedForecastForCoords(coords.lat, coords.lon)
     : await getCachedForecast();
 
-  return NextResponse.json({ optimistic, providers });
+  return NextResponse.json({ optimistic, providers, weatherFactors });
 }

@@ -7,12 +7,16 @@ import ErrorAlert from "./ErrorAlert";
 import ForecastWithRefresh from "./ForecastWithRefresh";
 import LocationSearch from "./LocationSearch";
 
+type WeatherFactors = ForecastApiResponse["weatherFactors"];
+
 interface ForecastSectionProps {
   initialData: OptimisticForecast;
+  initialWeatherFactors?: WeatherFactors;
 }
 
-export default function ForecastSection({ initialData }: ForecastSectionProps) {
+export default function ForecastSection({ initialData, initialWeatherFactors }: ForecastSectionProps) {
   const [forecast, setForecast] = useState<OptimisticForecast>(initialData);
+  const [weatherFactors, setWeatherFactors] = useState<WeatherFactors>(initialWeatherFactors ?? null);
   const [coords, setCoords] = useState({ lat: DEFAULT_LAT, lon: DEFAULT_LON });
   const [locationName, setLocationName] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -39,8 +43,9 @@ export default function ForecastSection({ initialData }: ForecastSectionProps) {
       const { lat: newLat, lon: newLon, cityState } = await res.json();
       setCoords({ lat: newLat, lon: newLon });
       setLocationName(cityState ?? null);
-      const { optimistic } = await fetchForecast(newLat, newLon);
+      const { optimistic, weatherFactors: factors } = await fetchForecast(newLat, newLon);
       setForecast(optimistic);
+      setWeatherFactors(factors ?? null);
     } catch (err) {
       setSearchError(err instanceof Error ? err.message : "Location not found");
     } finally {
@@ -49,8 +54,9 @@ export default function ForecastSection({ initialData }: ForecastSectionProps) {
   }
 
   async function handleRefresh() {
-    const { optimistic } = await fetchForecast(coords.lat, coords.lon);
+    const { optimistic, weatherFactors: factors } = await fetchForecast(coords.lat, coords.lon);
     setForecast(optimistic);
+    setWeatherFactors(factors ?? null);
   }
   const displayLocation = locationName ?? forecast.location;
 
@@ -58,7 +64,12 @@ export default function ForecastSection({ initialData }: ForecastSectionProps) {
     <section aria-label={`Today's forecast for ${displayLocation}`} className="space-y-4">
       <LocationSearch onSearch={handleSearch} disabled={isSearching} />
       {searchError && <ErrorAlert message={searchError} />}
-      <ForecastWithRefresh forecast={forecast} locationName={displayLocation} onRefresh={handleRefresh} />
+      <ForecastWithRefresh
+        forecast={forecast}
+        locationName={displayLocation}
+        weatherFactors={weatherFactors}
+        onRefresh={handleRefresh}
+      />
     </section>
   );
 }

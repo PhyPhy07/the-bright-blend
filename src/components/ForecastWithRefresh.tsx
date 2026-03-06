@@ -1,20 +1,30 @@
 "use client";
 
-import type { OptimisticForecast } from "@/lib/providers/types";
+import type { ForecastApiResponse, OptimisticForecast } from "@/lib/providers/types";
 import Image from "next/image";
 import { useState } from "react";
 import ErrorAlert from "./ErrorAlert";
 import { ForecastCard } from "./ForecastCard";
+import WeatherFactorsSection from "./WeatherFactorsSection";
+
+type WeatherFactors = ForecastApiResponse["weatherFactors"];
 
 interface ForecastWithRefreshProps {
   forecast: OptimisticForecast;
   locationName?: string;
+  weatherFactors?: WeatherFactors;
   onRefresh: () => Promise<void>;
 }
 
-export default function ForecastWithRefresh({ forecast, locationName, onRefresh }: ForecastWithRefreshProps) {
+export default function ForecastWithRefresh({
+  forecast,
+  locationName,
+  weatherFactors,
+  onRefresh,
+}: ForecastWithRefreshProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
+  const [factorsExpanded, setFactorsExpanded] = useState(false);
 
   async function handleRefresh() {
     setIsRefreshing(true);
@@ -66,6 +76,34 @@ export default function ForecastWithRefresh({ forecast, locationName, onRefresh 
         </div>
       ) : null}
       {refreshError && <ErrorAlert message={refreshError} />}
+      {weatherFactors && (
+        <div className="rounded-xl border-2 border-brand-blue-light bg-white overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setFactorsExpanded((v) => !v)}
+            className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left font-bold text-black font-[family-name:var(--font-typewriter)] hover:bg-brand-blue-light/30 transition"
+            aria-expanded={factorsExpanded}
+            aria-controls="weather-factors-content"
+            id="weather-factors-toggle"
+          >
+            Weather Factors
+            <span
+              className={`shrink-0 text-xl transition-transform ${factorsExpanded ? "rotate-180" : ""}`}
+              aria-hidden
+            >
+              ▼
+            </span>
+          </button>
+          <div
+            id="weather-factors-content"
+            role="region"
+            aria-labelledby="weather-factors-toggle"
+            className={factorsExpanded ? "" : "hidden"}
+          >
+            <WeatherFactorsSection factors={weatherFactors} embedded />
+          </div>
+        </div>
+      )}
       {!today ? (
         <div
           className="space-y-2 rounded-lg border border-black bg-white p-6 text-center font-[family-name:var(--font-typewriter)]"
@@ -88,7 +126,7 @@ export default function ForecastWithRefresh({ forecast, locationName, onRefresh 
         className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-2xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
       >
         <Image src="/lightning.svg" alt="" width={32} height={32} className="brightness-0 invert" aria-hidden />
-        {isRefreshing ? "Revealing…" : "Reveal"}
+        {isRefreshing ? "Remixing…" : "Remix"}
       </button>
     </div>
   );

@@ -28,6 +28,15 @@ export interface ForecastDay {
   export interface ForecastApiResponse {
     optimistic: OptimisticForecast;
     providers: NormalizedForecast[];
+    weatherFactors?: {
+      pressureHpa: number;
+      humidityPct: number;
+      windSpeedMph: number;
+      tempHighF: number;
+      tempLowF: number;
+      precipitationChance: number;
+      previousPressureHpa?: number;
+    } | null;
   }
 
   // icons for consistency across providers

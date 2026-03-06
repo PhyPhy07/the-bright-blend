@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 // Server component that fetches the cached forecast and passes it to the client for display and Remix.
 export default async function Home() {
-  const { optimistic } = await getCachedForecast();
+  const { optimistic, weatherFactors } = await getCachedForecast();
 
   return (
     <div className="min-h-screen bg-white px-4 pt-4 pb-8">
@@ -18,7 +18,7 @@ export default async function Home() {
             Optimistically delusional, by design.
           </h2>
         </header>
-        <ForecastSection initialData={optimistic} />
+        <ForecastSection initialData={optimistic} initialWeatherFactors={weatherFactors} />
       </main>
     </div>
   );

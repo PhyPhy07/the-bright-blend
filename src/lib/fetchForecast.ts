@@ -3,6 +3,7 @@ import type { ForecastApiResponse } from "./providers/types";
 import { getProviders } from "./providers/registry";
 import { getOptimisticForecast } from "./optimizer";
 import { getFulfilledValues } from "./utils/getFulfilledValues";
+import { fetchWeatherFactors } from "./utils/weatherFactors";
 
 export const DEFAULT_LAT = 40.7128;
 export const DEFAULT_LON = -74.006;
@@ -10,16 +11,20 @@ export const DEFAULT_LON = -74.006;
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
 
 async function fetchOptimisticForecast(lat: number, lon: number): Promise<ForecastApiResponse> {
-  const providers = getProviders();
-  const results = await Promise.allSettled(
-    providers.map((p) => p.fetchForecast(lat, lon))
-  );
-  const forecasts = getFulfilledValues(results);
+  const [forecastsResult, weatherFactorsResult] = await Promise.all([
+    Promise.allSettled(getProviders().map((p) => p.fetchForecast(lat, lon))),
+    fetchWeatherFactors(lat, lon),
+  ]);
+  const forecasts = getFulfilledValues(forecastsResult);
   const optimistic = {
     ...getOptimisticForecast(forecasts),
     allProvidersFailed: forecasts.length === 0,
   };
-  return { optimistic, providers: forecasts };
+  return {
+    optimistic,
+    providers: forecasts,
+    weatherFactors: weatherFactorsResult ?? null,
+  };
 }
 
 function cacheKey(lat: number, lon: number) {
