@@ -14,11 +14,17 @@ Pandora had hope. We have an algorithm to keep it alive.
 
 ## How It Works
 
-### Data Flow
+### Data Flow & Architecture
 
-![The Weather Wonder Data Flow](assets/BrightBlendDataFlow.png)
+See **[docs/DATA_FLOW_ARCHITECTURE.md](docs/DATA_FLOW_ARCHITECTURE.md)** for full diagrams (Mermaid) including:
+- System diagram (user → server → providers → UI)
+- Architecture layers
+- Sequence diagrams (initial load, location search)
+- Optimizer logic
+- Component hierarchy
+- File map
 
-**Summary:** User visits the page or clicks Rebrew → `getCachedForecast()` checks a 5‑min cache → on miss, fetches from Open-Meteo, Pirate Weather, and Weather.gov in parallel → `getOptimisticForecast` filters to today, drops outliers (±7°F from median), scores (temp + sun − rain), picks best → ForecastCard UI displays the result.
+**Summary:** User visits the page or clicks Remix → `getCachedForecast()` checks a 5‑min cache → on miss, fetches from Open-Meteo, Pirate Weather, and Weather.gov in parallel, plus weather factors from Open-Meteo → `getOptimisticForecast` filters to today, drops outliers (±7°F from median), scores (temp + sun − rain), picks best → ForecastCard + WeatherFactorsSection display the result.
 
 ### Optimistic Scoring
 
