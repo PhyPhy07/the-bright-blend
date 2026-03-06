@@ -8,6 +8,7 @@ import { fetchWeatherFactors } from "./utils/weatherFactors";
 // Conroe, Texas
 export const DEFAULT_LAT = 30.3119;
 export const DEFAULT_LON = -95.4561;
+export const DEFAULT_LOCATION = "Conroe, Texas";
 
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
 
@@ -17,8 +18,11 @@ async function fetchOptimisticForecast(lat: number, lon: number): Promise<Foreca
     fetchWeatherFactors(lat, lon),
   ]);
   const forecasts = getFulfilledValues(forecastsResult);
+  const blended = getOptimisticForecast(forecasts);
   const optimistic = {
-    ...getOptimisticForecast(forecasts),
+    ...blended,
+    location:
+      lat === DEFAULT_LAT && lon === DEFAULT_LON ? DEFAULT_LOCATION : blended.location,
     allProvidersFailed: forecasts.length === 0,
   };
   return {

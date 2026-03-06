@@ -36,7 +36,7 @@ export function getOptimisticForecast(forecasts: NormalizedForecast[]): Normaliz
   if (forecasts.length === 0) {
     return {
       provider: "Optimistic Blend",
-      location: "New York",
+      location: "Conroe, Texas",
       fetchedAt: new Date().toISOString(),
       daily: [],
     };
