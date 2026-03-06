@@ -22,15 +22,15 @@ function formatDate(dateStr: string): string {
 export function ForecastCard({ day, embedded, locationName, sourceProvider }: ForecastCardProps) {
   const content = (
     <>
-      <p className="mb-2 text-center text-lg font-normal tracking-wide text-brand-blue font-[family-name:var(--font-typewriter)]">
+      <p className="mb-2 text-center text-base font-normal tracking-wide text-brand-blue font-[family-name:var(--font-typewriter)] sm:text-lg">
         <span className="font-bold uppercase">Today&apos;s Forecast</span>
         {locationName ? ` for ${locationName}` : ""}: {getForecastSaying(day.icon)}
       </p>
-      <p className="mb-4 text-center text-2xl text-black font-[family-name:var(--font-typewriter)]">
+      <p className="mb-4 text-center text-xl text-black font-[family-name:var(--font-typewriter)] sm:text-2xl">
         {formatDate(day.date)}
       </p>
-      <div className="flex items-center justify-between gap-4">
-        <div className="space-y-3 text-xl text-black font-[family-name:var(--font-typewriter)]">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-3 text-lg text-black font-[family-name:var(--font-typewriter)] sm:text-xl">
           <p>
             <span className="font-semibold">High:</span>{" "}
             {day.tempHighF}°F
@@ -49,7 +49,7 @@ export function ForecastCard({ day, embedded, locationName, sourceProvider }: Fo
           </p>
         </div>
         {day.icon && (
-          <span className="mr-5 shrink-0 text-9xl" aria-hidden>
+          <span className="shrink-0 text-6xl sm:text-8xl md:text-9xl sm:mr-5" aria-hidden>
             {iconToEmoji(day.icon)}
           </span>
         )}

@@ -50,22 +50,15 @@ export default function ForecastWithRefresh({
         >
           <div className="relative aspect-[9/16] w-full shrink-0 overflow-hidden md:min-w-[360px] md:flex-1 md:aspect-auto md:min-h-[280px]">
             <Image
-              src="/mobileview.png"
-              alt="The Weather Wonder"
-              fill
-              className="object-cover md:hidden"
-              sizes="100vw"
-              priority
-            />
-            <Image
               src="/weatherwonder.png"
               alt="Weather Wonder"
-              width={360}
-              height={280}
-              className="hidden h-full min-h-[280px] w-full object-cover md:block"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 360px"
+              priority
             />
           </div>
-          <div className="flex-1 bg-white p-5 min-w-0">
+          <div className="flex-1 min-w-0 bg-white p-4 sm:p-5">
             <ForecastCard
               day={today}
               embedded
@@ -81,7 +74,7 @@ export default function ForecastWithRefresh({
           <button
             type="button"
             onClick={() => setFactorsExpanded((v) => !v)}
-            className="flex w-full items-center justify-between gap-2 px-4 py-3 text-left font-bold text-black font-[family-name:var(--font-typewriter)] hover:bg-brand-blue-light/30 transition"
+            className="flex min-h-[44px] w-full items-center justify-between gap-2 px-4 py-3 text-left font-bold text-black font-[family-name:var(--font-typewriter)] hover:bg-brand-blue-light/30 transition touch-manipulation"
             aria-expanded={factorsExpanded}
             aria-controls="weather-factors-content"
             id="weather-factors-toggle"
@@ -123,7 +116,7 @@ export default function ForecastWithRefresh({
         disabled={isRefreshing}
         aria-busy={isRefreshing}
         aria-label={isRefreshing ? "Refreshing forecast" : "Refresh forecast"}
-        className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-2xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)]"
+        className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl border-2 border-brand-gold bg-brand-gold px-4 py-3 text-xl font-bold text-white shadow-brand-gold transition disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold focus-visible:ring-offset-2 font-[family-name:var(--font-typewriter)] touch-manipulation sm:text-2xl"
       >
         <Image src="/lightning.svg" alt="" width={32} height={32} className="brightness-0 invert" aria-hidden />
         {isRefreshing ? "Remixing…" : "Remix"}

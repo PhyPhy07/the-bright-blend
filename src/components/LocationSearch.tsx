@@ -16,19 +16,19 @@ export default function LocationSearch({ onSearch, disabled = false }: LocationS
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 sm:flex-row sm:gap-2">
       <input
         type="text"
         placeholder="Search for a location..."
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        className="flex-1 rounded-lg border-2 border-brand-blue-light px-4 py-2 text-brand-blue placeholder:text-brand-blue font-[family-name:var(--font-typewriter)]"
+        className="min-h-[44px] flex-1 rounded-lg border-2 border-brand-blue-light px-4 py-3 text-base text-brand-blue placeholder:text-brand-blue font-[family-name:var(--font-typewriter)] sm:py-2"
         aria-label="Search location"
       />
       <button
         type="submit"
         disabled={disabled}
-        className="rounded-lg border-2 border-brand-gold bg-brand-gold px-4 py-2 font-bold text-white font-[family-name:var(--font-typewriter)] disabled:opacity-50"
+        className="min-h-[44px] shrink-0 rounded-lg border-2 border-brand-gold bg-brand-gold px-5 py-3 font-bold text-white font-[family-name:var(--font-typewriter)] disabled:opacity-50 sm:py-2"
       >
         {disabled ? "Searching…" : "Search"}
       </button>
