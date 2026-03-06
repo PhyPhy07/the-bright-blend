@@ -12,6 +12,10 @@ export const DEFAULT_LOCATION = "Conroe, Texas";
 
 const CACHE_REVALIDATE_SECONDS = 300; // 5 minutes
 
+function isDefaultCoords(lat: number, lon: number): boolean {
+  return Math.abs(lat - DEFAULT_LAT) < 0.01 && Math.abs(lon - DEFAULT_LON) < 0.01;
+}
+
 async function fetchOptimisticForecast(lat: number, lon: number): Promise<ForecastApiResponse> {
   const [forecastsResult, weatherFactorsResult] = await Promise.all([
     Promise.allSettled(getProviders().map((p) => p.fetchForecast(lat, lon))),
@@ -21,8 +25,7 @@ async function fetchOptimisticForecast(lat: number, lon: number): Promise<Foreca
   const blended = getOptimisticForecast(forecasts);
   const optimistic = {
     ...blended,
-    location:
-      lat === DEFAULT_LAT && lon === DEFAULT_LON ? DEFAULT_LOCATION : blended.location,
+    location: isDefaultCoords(lat, lon) ? DEFAULT_LOCATION : blended.location,
     allProvidersFailed: forecasts.length === 0,
   };
   return {
@@ -37,7 +40,13 @@ function cacheKey(lat: number, lon: number) {
 }
 
 export const getCachedForecast = unstable_cache(
-  async () => fetchOptimisticForecast(DEFAULT_LAT, DEFAULT_LON),
+  async () => {
+    const result = await fetchOptimisticForecast(DEFAULT_LAT, DEFAULT_LON);
+    return {
+      ...result,
+      optimistic: { ...result.optimistic, location: DEFAULT_LOCATION },
+    };
+  },
   cacheKey(DEFAULT_LAT, DEFAULT_LON),
   { revalidate: CACHE_REVALIDATE_SECONDS }
 );
